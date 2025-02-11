@@ -44,28 +44,28 @@ class NostrFilter private constructor(
         private var until: Long? = null
         private var limit: Int = 1
 
-        fun idList(iDList: List<String>? = null) = apply {
-            listOfIds = iDList
+        fun idList(vararg iDList: String = emptyArray()) = apply {
+            listOfIds = if (iDList.isEmpty()) null else iDList.toList()
         }
 
-        fun authors(authorList: List<String>? = null) = apply {
-            authorsList = authorList
+        fun authors(vararg authorList: String = emptyArray()) = apply {
+            authorsList = if (authorList.isEmpty()) null else authorList.toList()
         }
 
-        fun kinds(kindList: List<Int>) = apply {
-            listOfKinds = kindList
+        fun kinds(vararg kindList: Int) = apply {
+            listOfKinds = kindList.toList()
         }
 
-        fun eventTagList(listOfEventTags: List<String>? = null) = apply {
-            eventTagList = listOfEventTags
+        fun eventTagList(vararg listOfEventTags: String = emptyArray()) = apply {
+            eventTagList = if (listOfEventTags.isEmpty()) null else listOfEventTags.toList()
         }
 
-        fun pubkeyTagList(pubkeyList: List<String>? = null) = apply {
-            pubkeyTagList = pubkeyList
+        fun pubkeyTagList(vararg pubkeyList: String = emptyArray()) = apply {
+            pubkeyTagList = if (pubkeyList.isEmpty()) null else pubkeyList.toList()
         }
 
-        fun topics(listOfTopics: List<String>? = null) = apply {
-            topicList = listOfTopics
+        fun topics(vararg listOfTopics: String = emptyArray()) = apply {
+            topicList = if (listOfTopics.isEmpty()) null else listOfTopics.toList()
         }
 
         fun since(timeStamp: Long? = null) = apply {
