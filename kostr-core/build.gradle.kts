@@ -159,13 +159,14 @@ kotlin {
             }
         }
 
+        androidInstrumentedTest.configure {
+            //dependsOn(commonJvmTest)
+        }
 
         val androidUnitTest by getting {
             dependsOn(commonJvmTest)
         }
-        androidUnitTest.dependencies {
 
-        }
 
 
         val baseJvmTest by getting {

@@ -15,8 +15,10 @@ import org.junit.runner.RunWith
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
+//        val someProfile = AndroidClient()
+//        someProfile.testProfile()
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("kt.nostr.kostr_android.test", appContext.packageName)
+        assertEquals("ktnostr.android.test", appContext.packageName)
     }
 }
