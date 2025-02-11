@@ -111,6 +111,15 @@ open class RequestMessage(
         SubscriptionId -> $subscriptionId
         Filters -> $filters
     """.trimIndent()
+
+    companion object {
+        fun singleFilterRequest(
+            subscriptionId: String = uuid4().bytes.decodeToString().substring(0, 5),
+            filter: NostrFilter
+        ): RequestMessage {
+            return RequestMessage(messageType = "REQ", subscriptionId, listOf(filter))
+        }
+    }
 }
 
 @Serializable(with = ClientMessage.MessageSerializer::class)
