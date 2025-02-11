@@ -16,7 +16,7 @@ plugins {
     id("com.android.library")
 
     kotlin("plugin.serialization")
-//    `maven-publish`
+    `maven-publish`
 }
 
 
@@ -26,6 +26,7 @@ kotlin {
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
+//        jvmToolchain(17)
         apiVersion.set(KotlinVersion.KOTLIN_1_8)
         languageVersion.set(KotlinVersion.KOTLIN_1_8)
     }
