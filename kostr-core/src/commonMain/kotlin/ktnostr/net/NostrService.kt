@@ -1,5 +1,6 @@
 package ktnostr.net
 
+import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
@@ -19,22 +20,26 @@ import ktnostr.nostr.relay.*
 import kotlin.coroutines.CoroutineContext
 
 
-class NostrService(private val relayPool: RelayPool = RelayPool()): CoroutineScope {
+class NostrService(
+    private val relayPool: RelayPool = RelayPool(),
+    val customClient: HttpClient? = null
+): CoroutineScope {
     private val serviceDispatcher = Dispatchers.IO.limitedParallelism(
         relayPool.getRelays().size,
         name = "NostrServiceDispatcher"
     )
     private val serviceMutex = Mutex()
 
-    private val client = httpClient {
-        install(WebSockets){
+    private val client = customClient
+        ?: httpClient {
+            install(WebSockets){
 
+            }
+
+            install(Logging){
+
+            }
         }
-
-        install(Logging){
-
-        }
-    }
 
     override val coroutineContext: CoroutineContext
         get() = serviceDispatcher

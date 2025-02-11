@@ -93,6 +93,16 @@ val clientService = NostrService(
 //Without a custom pool(using the default pool)
 val service = NostrService()
 ```
+You can also use a custom HTTP client for the `NostrService`, as long as it has Websocket support.
+```kotlin
+val myHttpClient = httpClient { 
+    // custom configs(or not)
+}
+val service = NostrService(customClient = myHttpClient)
+```
+The current limitation is that the HTTP client needs to be Ktor-compatible, that is, you create a 
+custom Ktor engine that uses you client underneath.
+
 Note that if you need to do anything custom, such as using read-only relays,
 you will need to setup the list of relays, then use them in the relay pool:
 ```kotlin
@@ -157,9 +167,11 @@ during its execution. The function however displays the errors using standard ou
 //Using requestWithResult() ---
 // - Assuming a suspending context:
 val events = clientService.requestWithResult(myRequest)
+events.forEach { println(it.content) }
 // OR, following with the request() example above:
 appScope.launch {
-  val events = clientService.requestWithResult(myRequest)  
+  val events = clientService.requestWithResult(myRequest)
+  events.forEach { println(it.content) }  
 }
 ```
 ## License
