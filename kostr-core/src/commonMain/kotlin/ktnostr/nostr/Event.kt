@@ -141,6 +141,10 @@ enum class EventKind(val kind: Int) {
     /**
      * This is used for auth events constructed by the client.
      */
-    AUTH(22242);
+    AUTH(22242),
+    /**
+     * This is used for comments on any posts other than Kind 1 posts(i.e, blogposts, shared file events,etc).
+     */
+    COMMENT(1111);
 
 }

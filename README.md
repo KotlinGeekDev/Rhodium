@@ -107,15 +107,27 @@ val customPool = RelayPool(relays = customRelays)
 In order to make a subscription request, you need to construct a `RequestMessage`.
 And to do that, you need to pass in a subscriptionId(just a string), and a `NostrFilter`:
 ```kotlin
-val postsByFiatjafFilter = NostrFilter.newFilter()
-                    .kinds(listOf(EventKind.TEXT_NOTE.kind)) // <-- Looking for posts. Other kinds can be added
-                    .authors(listOf("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d")) // <-- The profiles for which we want to find the posts(as indicated by .kinds() above)
+val postsCommentsByFiatjafFilter = NostrFilter.newFilter()
+                    .kinds(EventKind.TEXT_NOTE.kind, EventKind.COMMENT.kind) // <-- Looking for posts and comments. Other kinds can be added
+                    .authors("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d") // <-- The profiles for which we want to find the posts and comments(as indicated by .kinds() above)
                     .limit(20) // <-- Setting a limit is important, to avoid issues with relays
                     .build()
 
 val myRequest = RequestMessage(
-    subscriptionId = "fiatjaf_posts",
-    filters = listOf(postsByFiatjafFilter)
+    subscriptionId = "fiatjaf_posts_and_comments",
+    filters = listOf(postsCommentsByFiatjafFilter)
+)
+```
+
+If you want to make a request with a single filter, you can do so with `RequestMessage.singleFilterRequest`. 
+Using the same example above, we can rewrite it as:
+
+```kotlin
+val postsCommentsByFiatjafFilter = ... //Same as above
+
+val myRequest = RequestMessage.singleFilterRequest(  // <- singleFilterRequest is called here.
+    subscriptionId = "fiatjaf_posts_and_comments",
+    filter = postsByFiatjafFilter
 )
 ```
 Now, you can use the `NostrService` to make the request, either using `request()` or `requestWithResult()`. 
