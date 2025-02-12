@@ -6,8 +6,8 @@ on:
   release:
     types: [released]
 
-concurrency:
-  cancel-in-progress: true
+#concurrency:
+#  cancel-in-progress: true
 
 jobs:
   publish:
