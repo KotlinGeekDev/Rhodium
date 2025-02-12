@@ -18,6 +18,15 @@ Note: This is still in development and very incomplete.
 * The Nostr protocol specs can be found [here](https://github.com/nostr-protocol/nips).
 
 ## How to include the libary
+You can include the library from either Maven Central or Jitpack.
+
+### Maven
+You can include the library in the common source set like this:
+```kotlin
+dependencies {
+    implementation("io.github.kotlingeekdev:ballast:1.0-beta-07")
+}
+```
   Inside your root-level `build.gradle(.kts)` file, you should add `jitpack`:
   ``` kotlin
 // build.gradle.kts
@@ -61,7 +70,7 @@ then, in your module's `build.gradle(.kts)`, you need to add:
 // build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.kostr:kostr-core:v1.0-beta-06")
+    implementation("com.github.KotlinGeekDev.Ballast:ballast:1.0-beta-07")
 
 }
 
@@ -71,7 +80,7 @@ If you're including it in an Android app, you can just add:
 // app/build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.kostr:kostr-core-android:v1.0-beta-06")
+    implementation("com.github.KotlinGeekDev.Ballast:ballast-android:1.0-beta-07")
 
 }
 ```
