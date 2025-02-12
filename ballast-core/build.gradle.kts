@@ -201,7 +201,7 @@ kotlin {
 }
 
 android {
-    namespace = "ballast.android"
+    namespace = "io.github.kotlingeekdev.ballast.android"
     compileSdk = 34
     defaultConfig {
         minSdk = 21
