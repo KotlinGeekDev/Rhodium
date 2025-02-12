@@ -30,8 +30,8 @@ object Events {
         val normalizedTags = tags.map {
             Tag(it.identifier,
                 it.description,
-                it.recommendedRelayUrl,
-                it.petname)
+                it.content,
+                it.customContent)
         }
 
         return Event(eventID, publicKeyHex, timeStamp, eventKind, normalizedTags, content, signatureString)

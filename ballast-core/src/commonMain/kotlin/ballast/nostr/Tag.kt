@@ -16,17 +16,17 @@ import kotlinx.serialization.encoding.Encoder
  * of relays you already have, and a petname or username(optional),
  * when a tag contains an identity's alias(or username).
  *
- * @param identifier The tag identifier, as a string
- * @param description The tag's contents, as a string
- * @param recommendedRelayUrl (optional) A recommended relay url, as a string
+ * @param identifier The tag key, as a string
+ * @param description The tag value, as a string
+ * @param content (optional) A custom field with no particular meaning(generally used for relay recommendation), as a string
  */
 
 
 @Serializable(with = Tag.TagSerializer::class)
 data class Tag(
     val identifier: String, val description: String,
-    val recommendedRelayUrl: String? = null,
-    val petname: String? = null
+    val content: String? = null,
+    val customContent: String? = null
 ) {
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -38,8 +38,8 @@ data class Tag(
                 buildList {
                     add(identifier)
                     add(description)
-                    if (recommendedRelayUrl != null) add(recommendedRelayUrl)
-                    if (petname != null) add(petname)
+                    if (content != null) add(content)
+                    if (customContent != null) add(customContent)
                 }.toTypedArray()
             }
             encoder.encodeSerializableValue(builtinSerializer, arrayOfValues)
@@ -70,10 +70,10 @@ data class Tag(
 //fun List<Tag>.toStringList(): List<List<String>> {
 //    val tagStringList: MutableList<List<String>> = mutableListOf()
 //    this.forEach { tag ->
-//        val elementList: List<String> = if (tag.recommendedRelayUrl != null){
-//            listOf(tag.identifier, tag.description, tag.recommendedRelayUrl)
+//        val elementList: List<String> = if (tag.customContent != null){
+//            listOf(tag.identifier, tag.content, tag.customContent)
 //        } else {
-//            listOf(tag.identifier, tag.description)
+//            listOf(tag.identifier, tag.content)
 //        }
 //        tagStringList.add(elementList)
 //    }
