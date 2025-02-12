@@ -28,7 +28,7 @@ allprojects {
     apply(plugin = "com.vanniktech.maven.publish")
 //    apply(plugin = "maven-publish")
 
-
+    val isJitpack = System.getenv("JITPACK") == "true"
 
     group = "io.github.kotlingeekdev"
     version = "1.0-beta-06"
@@ -39,7 +39,9 @@ allprojects {
 
     mavenPublishing {
         publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-        signAllPublications()
+        if (!isJitpack){
+            signAllPublications()
+        }
 
         coordinates(group.toString(), "ballast", version.toString())
 //        configure(KotlinMultiplatform(
