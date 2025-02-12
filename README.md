@@ -28,6 +28,8 @@ dependencies {
     implementation("io.github.kotlingeekdev:ballast:1.0-beta-07")
 }
 ```
+
+### Jitpack
   Inside your root-level `build.gradle(.kts)` file, you should add `jitpack`:
   ``` kotlin
 // build.gradle.kts
