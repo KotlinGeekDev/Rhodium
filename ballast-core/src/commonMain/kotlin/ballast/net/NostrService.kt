@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 
 
 class NostrService(
-    private val relayPool: RelayPool = RelayPool(),
+    val relayPool: RelayPool = RelayPool(),
     private val client: HttpClient = httpClient { install(WebSockets){} }
 ): CoroutineScope {
     private val serviceDispatcher = Dispatchers.IO.limitedParallelism(
@@ -224,6 +224,10 @@ class NostrService(
         }
 
         return results
+    }
+
+    fun clearRelayPool() {
+        relayPool.clearPool()
     }
 
     fun stopService(){
