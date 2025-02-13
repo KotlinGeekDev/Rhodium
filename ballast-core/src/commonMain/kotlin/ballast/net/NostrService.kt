@@ -1,7 +1,13 @@
 package ballast.net
 
+import ballast.formattedDateTime
+import ballast.nostr.Event
+import ballast.nostr.client.ClientMessage
+import ballast.nostr.client.RequestMessage
+import ballast.nostr.deserializedEvent
+import ballast.nostr.eventMapper
+import ballast.nostr.relay.*
 import io.ktor.client.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
 import kotlinx.atomicfu.atomic
@@ -10,36 +16,18 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
-import ballast.formattedDateTime
-import ballast.nostr.Event
-import ballast.nostr.client.ClientMessage
-import ballast.nostr.client.RequestMessage
-import ballast.nostr.deserializedEvent
-import ballast.nostr.eventMapper
-import ballast.nostr.relay.*
 import kotlin.coroutines.CoroutineContext
 
 
 class NostrService(
     private val relayPool: RelayPool = RelayPool(),
-    val customClient: HttpClient? = null
+    private val client: HttpClient = httpClient { install(WebSockets){} }
 ): CoroutineScope {
     private val serviceDispatcher = Dispatchers.IO.limitedParallelism(
         relayPool.getRelays().size,
         name = "NostrServiceDispatcher"
     )
     private val serviceMutex = Mutex()
-
-    private val client = customClient
-        ?: httpClient {
-            install(WebSockets){
-
-            }
-
-            install(Logging){
-
-            }
-        }
 
     override val coroutineContext: CoroutineContext
         get() = serviceDispatcher
