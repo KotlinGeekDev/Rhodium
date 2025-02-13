@@ -43,14 +43,14 @@ allprojects {
             signAllPublications()
         }
 
-        coordinates(group.toString(), "ballast", version.toString())
+        coordinates(group.toString(), "rhodium", version.toString())
 //        configure(KotlinMultiplatform(
 //            javadocJar = JavadocJar.Javadoc(),
 //            sourcesJar = true
 //        ))
 
         pom {
-            name = "Ballast"
+            name = "Rhodium"
             description = " A Kotlin Multiplatform library for Nostr"
             url = "https://github.com/KotlinGeekDev/Ballast"
 
@@ -71,8 +71,8 @@ allprojects {
             }
 
             scm {
-                connection = "scm:git:git://github.com/KotlinGeekDev/Ballast.git"
-                url = "https://github.com/KotlinGeekDev/Ballast"
+                connection = "scm:git:git://github.com/KotlinGeekDev/Rhodium.git"
+                url = "https://github.com/KotlinGeekDev/Rhodium"
             }
         }
     }
