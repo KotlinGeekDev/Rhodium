@@ -7,6 +7,11 @@ sealed class NostrException : RuntimeException {
 }
 
 /**
+ * This error is thrown when something goes wrong during the Nip05 parsing process.
+ */
+class Nip05ValidationError(override val message: String) : NostrException(message)
+
+/**
  * This error type is used when an event is invalid.
  * For example, when the event id is not valid, or
  * when the event signature is not valid.
