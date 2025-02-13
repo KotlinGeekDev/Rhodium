@@ -5,7 +5,9 @@ import ballast.nostr.Event
 import ballast.nostr.client.ClientMessage
 import ballast.nostr.client.RequestMessage
 import ballast.nostr.deserializedEvent
+import ballast.nostr.EventKind
 import ballast.nostr.eventMapper
+import ballast.nostr.NostrFilter
 import ballast.nostr.relay.*
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
@@ -96,7 +98,7 @@ class NostrService(
 //        }
     }
 
-    private suspend fun requestFromRelay(
+    private fun requestFromRelay(
         requestMessage: RequestMessage,
         relay: Relay,
         onRelayMessage: suspend (Relay, RelayMessage) -> Unit,
@@ -104,23 +106,25 @@ class NostrService(
     ) {
         val requestJson = eventMapper.encodeToString(requestMessage)
 
-        println("Coroutine Scope @ ${relay.relayURI}")
-        try {
-            client.webSocket(urlString = relay.relayURI) {
-                send(requestJson)
+        launch {
+            println("Coroutine Scope @ ${relay.relayURI}")
+            try {
+                client.webSocket(urlString = relay.relayURI) {
+                    send(requestJson)
 
-                for (frame in incoming) {
-                    val received = (frame as Frame.Text).readText()
-                    val receivedMessage = eventMapper.decodeFromString<RelayMessage>(received)
-                    onRelayMessage(relay, receivedMessage)
+                    for (frame in incoming) {
+                        val received = (frame as Frame.Text).readText()
+                        val receivedMessage = eventMapper.decodeFromString<RelayMessage>(received)
+                        onRelayMessage(relay, receivedMessage)
+                    }
                 }
+            } catch (e: kotlinx.io.IOException) {
+                onRequestError(relay, e)
+            } catch (err: Exception) {
+                onRequestError(relay, err)
+            } catch (t: Throwable) {
+                onRequestError(relay, t)
             }
-        } catch (e: kotlinx.io.IOException) {
-            onRequestError(relay, e)
-        } catch (err: Exception) {
-            onRequestError(relay, err)
-        } catch (t: Throwable) {
-            onRequestError(relay, t)
         }
     }
 
@@ -224,6 +228,20 @@ class NostrService(
         }
 
         return results
+    }
+
+    suspend fun getMetadataFor(profileHex: String, preferredRelays: List<String>): Event {
+        val profileRequest = RequestMessage.singleFilterRequest(
+            filter = NostrFilter.newFilter()
+                .kinds(EventKind.METADATA.kind)
+                .authors(profileHex)
+                .limit(1)
+                .build()
+        )
+        val potentialResults = if (preferredRelays.isEmpty())
+            requestWithResult(profileRequest) else requestWithResult(profileRequest, preferredRelays.map { Relay(it) })
+
+        return potentialResults.maxBy { it.creationDate }
     }
 
     fun clearRelayPool() {
