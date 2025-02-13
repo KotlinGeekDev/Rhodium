@@ -5,16 +5,18 @@ import kotlin.jvm.JvmStatic
 
 class RelayPool {
 
-    private var relayList: MutableList<Relay>
+    private val relayList: MutableList<Relay> = mutableListOf()
     constructor(){
-        relayList = getDefaultRelays().toMutableList()
+        getDefaultRelays().forEach {
+            relayList.add(it)
+        }
     }
 
     constructor(relays: List<Relay>) : this() {
-        this.relayList = relays as MutableList<Relay>
+        relays.forEach { relayList.add(it) }
     }
 
-    fun getRelays() = if (relayList.isEmpty()) getDefaultRelays() else relayList.toList()
+    fun getRelays() = relayList.toList()
 
     fun addRelay(relay: Relay) {
         if (relayList.add(relay))
@@ -28,14 +30,32 @@ class RelayPool {
         }
     }
 
+    fun addRelays(relays: Collection<Relay>) {
+        relays.forEach { relayList.add(it) }
+    }
+
+    fun addRelayList(listOfRelays: Collection<String>) {
+        val relayRefs = listOfRelays.map { Relay(it) }
+        addRelays(relayRefs)
+    }
+
     fun removeRelay(relay: Relay) {
         relayList.remove(relay)
+    }
+
+    fun clearPool() {
+        relayList.clear()
     }
 
     companion object {
 
         fun fromUrls(vararg relayUris: String): RelayPool {
             val relayList = relayUris.map { Relay(it) }
+            return RelayPool(relayList)
+        }
+
+        fun fromUrls(urlList: Collection<String>): RelayPool {
+            val relayList = urlList.map { Relay(it) }
             return RelayPool(relayList)
         }
 
