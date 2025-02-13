@@ -1,5 +1,8 @@
 package ballast.nostr.client
 
+import ballast.crypto.toHexString
+import ballast.nostr.Event
+import ballast.nostr.NostrFilter
 import com.benasher44.uuid.bytes
 import com.benasher44.uuid.uuid4
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -12,8 +15,6 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
-import ballast.nostr.Event
-import ballast.nostr.NostrFilter
 
 @Serializable(with = ClientMessage.MessageSerializer::class)
 sealed class ClientMessage(open val messageType: String){
@@ -114,7 +115,7 @@ open class RequestMessage(
 
     companion object {
         fun singleFilterRequest(
-            subscriptionId: String = uuid4().bytes.decodeToString().substring(0, 5),
+            subscriptionId: String = uuid4().bytes.toHexString().substring(0, 5),
             filter: NostrFilter
         ): RequestMessage {
             return RequestMessage(messageType = "REQ", subscriptionId, listOf(filter))
