@@ -109,6 +109,8 @@ kotlin {
             implementation("com.benasher44:uuid:0.8.4")
             //ByteBuffer(until a kotlinx-io replacement appears)
             implementation("com.ditchoom:buffer:1.4.2")
+            //Logging
+            implementation("co.touchlab:kermit:2.0.5")
         }
 
         commonTest.dependencies {

@@ -77,7 +77,7 @@ fun Event.isValid(): Boolean {
         this.tags, this.content
     )
     if (eventId != this.id) {
-        println("The event id is invalid.")
+        serviceLogger.w("The event id is invalid.")
         return false
     }
     val signatureValidity = CryptoUtils.verifyContentSignature(
@@ -86,7 +86,7 @@ fun Event.isValid(): Boolean {
         Hex.decode(eventId)
     )
     if (!signatureValidity) {
-        println("The event signature is invalid.\n Please check the pubkey, or content.")
+        serviceLogger.w("The event signature is invalid.\n Please check the pubkey, or content.")
         return false
     }
     return true

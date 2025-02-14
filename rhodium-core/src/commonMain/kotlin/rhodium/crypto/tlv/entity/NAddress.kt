@@ -48,6 +48,7 @@ import rhodium.crypto.bechToBytes
 import rhodium.crypto.tlv.Tlv
 import rhodium.crypto.tlv.TlvBuilder
 import rhodium.crypto.tlv.TlvTypes
+import rhodium.logging.serviceLogger
 
 data class NAddress(
     val kind: Int,
@@ -66,7 +67,7 @@ data class NAddress(
                     return parse(key.bechToBytes())
                 }
             } catch (e: Throwable) {
-                Log.w("NAddress", "Issue trying to Decode NIP19 $this: ${e.message}")
+                serviceLogger.w("Issue trying to Decode NIP19 $this: ${e.message}", e)
                 // e.printStackTrace()
             }
 

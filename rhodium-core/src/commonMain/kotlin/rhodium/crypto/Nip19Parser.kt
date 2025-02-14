@@ -47,6 +47,7 @@ package rhodium.crypto
 import fr.acinq.secp256k1.Hex
 import kotlinx.coroutines.CancellationException
 import rhodium.crypto.tlv.entity.*
+import rhodium.logging.serviceLogger
 
 object Nip19Parser {
     private val nip19PlusNip46regex: Regex =
@@ -81,7 +82,7 @@ object Nip19Parser {
 
             return type + key
         } catch (e: Throwable) {
-            println("NIP19 Parser: Issue trying to Decode NIP19 $uri: ${e.message}")
+            serviceLogger.e("NIP19 Parser: Issue trying to Decode NIP19 $uri: ${e.message}", e)
         }
 
         return null
@@ -104,7 +105,7 @@ object Nip19Parser {
 
             return parseComponents(type, key, additionalChars?.ifEmpty { null })
         } catch (e: Throwable) {
-            println("NIP19 Parser: Issue trying to Decode NIP19 $uri: ${e.message}")
+            serviceLogger.e("NIP19 Parser: Issue trying to Decode NIP19 $uri: ${e.message}", e)
         }
 
         return null
@@ -133,7 +134,7 @@ object Nip19Parser {
                 ParseReturn(it, nip19, additionalChars)
             }
         } catch (e: Throwable) {
-            println("NIP19 Parser: Issue trying to Decode NIP19 $key: ${e.message}")
+            serviceLogger.e("NIP19 Parser: Issue trying to Decode NIP19 $key: ${e.message}", e)
             null
         }
 
@@ -146,7 +147,7 @@ object Nip19Parser {
             val additionalChars = result.groups[4]?.value // additional chars
 
             if (type != null) {
-                val parsed = Nip19Parser.parseComponents(type, key, additionalChars)?.entity
+                val parsed = parseComponents(type, key, additionalChars)?.entity
 
                 if (parsed != null) {
                     returningList.add(parsed)
