@@ -33,6 +33,7 @@ allprojects {
     group = "io.github.kotlingeekdev"
     version = "1.0-beta-08"
 
+
 //    val javadocJar = tasks.register<Jar>("javadocJar") {
 //        archiveClassifier.set("javadoc")
 //    }
@@ -43,7 +44,9 @@ allprojects {
             signAllPublications()
         }
 
+
         coordinates(group.toString(), "rhodium", version.toString())
+
 //        configure(KotlinMultiplatform(
 //            javadocJar = JavadocJar.Javadoc(),
 //            sourcesJar = true
@@ -73,6 +76,7 @@ allprojects {
             scm {
                 connection = "scm:git:git://github.com/KotlinGeekDev/Rhodium.git"
                 url = "https://github.com/KotlinGeekDev/Rhodium"
+
             }
         }
     }
