@@ -105,6 +105,7 @@ class NostrService(
 
         launch {
             serviceLogger.d("Coroutine Scope @ ${relay.relayURI}")
+
             try {
                 client.webSocket(urlString = relay.relayURI) {
                     send(requestJson)
@@ -216,6 +217,7 @@ class NostrService(
         if (jobs.all { it.isCompleted }) {
             serviceLogger.d("EoseCount : ${relayEoseCount.value}")
             serviceLogger.d("RelayErrorCount: ${relayErrorCount.value}")
+
 //            if (relayEoseCount.value + relayErrorCount.value == endpoints.size){
 //                stopService()
 //
