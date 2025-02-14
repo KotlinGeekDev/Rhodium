@@ -1,4 +1,4 @@
-# Kostr
+# Rhodium
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0.20-blue?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.kotlingeekdev/ballast?color=blue)](https://search.maven.org/search?q=g:io.github.kotlingeekdev)
@@ -25,7 +25,7 @@ You can include the library from either Maven Central or Jitpack.
 You can include the library in the common source set like this:
 ```kotlin
 dependencies {
-    implementation("io.github.kotlingeekdev:ballast:1.0-beta-07")
+    implementation("io.github.kotlingeekdev:rhodium:1.0-beta-08")
 }
 ```
 
@@ -73,7 +73,7 @@ then, in your module's `build.gradle(.kts)`, you need to add:
 // build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.Ballast:ballast:1.0-beta-07")
+    implementation("com.github.KotlinGeekDev.Rhodium:rhodium:1.0-beta-08")
 
 }
 
@@ -83,15 +83,15 @@ If you're including it in an Android app, you can just add:
 // app/build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.Ballast:ballast-android:1.0-beta-07")
+    implementation("com.github.KotlinGeekDev.Rhodium:rhodium-android:1.0-beta-08")
 
 }
 ```
 
 ## Usage
 When publishing an event, or making a subscription/close request to a relay, 
-[`ClientMessage`](kostr-core/src/commonMain/kotlin/ktnostr/nostr/client/ClientMessage.kt) is used to encode the request/event,
-and anything sent by a relay is encoded as a [`RelayMessage`](kostr-core/src/commonMain/kotlin/ktnostr/nostr/relay/RelayMessage.kt).</p>
+[`ClientMessage`](rhodium-core/src/commonMain/kotlin/rhodium/nostr/client/ClientMessage.kt) is used to encode the request/event,
+and anything sent by a relay is encoded as a [`RelayMessage`](rhodium-core/src/commonMain/kotlin/rhodium/nostr/relay/RelayMessage.kt).</p>
 Relays can be configured using a `RelayPool`, 
 and actual communication with relays is done with the `NostrService`.</p>
 You can setup the NostrService with/without a custom relay pool as follows:
