@@ -25,7 +25,8 @@ You can include the library from either Maven Central or Jitpack.
 You can include the library in the common source set like this:
 ```kotlin
 dependencies {
-    implementation("io.github.kotlingeekdev:rhodium:1.0-beta-08")
+    implementation("io.github.kotlingeekdev:rhodium:1.0-beta-09")
+
 }
 ```
 
@@ -73,7 +74,8 @@ then, in your module's `build.gradle(.kts)`, you need to add:
 // build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.Rhodium:rhodium:1.0-beta-08")
+    implementation("com.github.KotlinGeekDev.Rhodium:rhodium:1.0-beta-09")
+
 
 }
 
@@ -83,7 +85,7 @@ If you're including it in an Android app, you can just add:
 // app/build.gradle.kts
 dependencies {
     //...
-    implementation("com.github.KotlinGeekDev.Rhodium:rhodium-android:1.0-beta-08")
+    implementation("com.github.KotlinGeekDev.Rhodium:rhodium-android:1.0-beta-09")
 
 }
 ```

@@ -1,14 +1,5 @@
 package rhodium.net
 
-import rhodium.formattedDateTime
-import rhodium.nostr.Event
-import rhodium.nostr.client.ClientMessage
-import rhodium.nostr.client.RequestMessage
-import rhodium.nostr.deserializedEvent
-import rhodium.nostr.EventKind
-import rhodium.nostr.eventMapper
-import rhodium.nostr.NostrFilter
-import rhodium.nostr.relay.*
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
@@ -18,6 +9,12 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
+import rhodium.formattedDateTime
+import rhodium.logging.serviceLogger
+import rhodium.nostr.*
+import rhodium.nostr.client.ClientMessage
+import rhodium.nostr.client.RequestMessage
+import rhodium.nostr.relay.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -107,7 +104,8 @@ class NostrService(
         val requestJson = eventMapper.encodeToString(requestMessage)
 
         launch {
-            println("Coroutine Scope @ ${relay.relayURI}")
+            serviceLogger.d("Coroutine Scope @ ${relay.relayURI}")
+
             try {
                 client.webSocket(urlString = relay.relayURI) {
                     send(requestJson)
@@ -149,57 +147,57 @@ class NostrService(
 
                         for (frame in incoming) {
                             if (frame is Frame.Close) {
-                                println("Received a close frame with reason: ${frame.readReason()}")
+                                serviceLogger.i("Received a close frame with reason: ${frame.readReason()}")
                             }
                             else if (frame is Frame.Binary) {
-                                println("Received binary data : ${frame.readBytes()}")
+                                serviceLogger.i("Received binary data : ${frame.readBytes()}")
                             }
                             else if (frame is Frame.Text) {
                                 val message = eventMapper.decodeFromString<RelayMessage>(frame.readText())
                                 when (message) {
                                     is RelayEventMessage -> {
-                                        println("Event message received from ${endpoint.relayURI}")
+                                        serviceLogger.d("Event message received from ${endpoint.relayURI}")
                                         val event = deserializedEvent(message.eventJson)
-                                        println("Event created on ${formattedDateTime(event.creationDate)}")
-                                        println(event.content)
+                                        serviceLogger.d("Event created on ${formattedDateTime(event.creationDate)}")
+                                        serviceLogger.d(event.content)
                                         results.add(event)
 
                                     }
 
                                     is CountResponse -> {
-                                        println("Received Count message: $message")
+                                        serviceLogger.d("Received Count message: $message")
                                     }
 
                                     is RelayAuthMessage -> {
-                                        println("Received Auth message: $message")
+                                        serviceLogger.i("Received Auth message: $message")
                                         serviceMutex.withLock {
                                             if (relayAuthCache.put(endpoint, message) != null){
-                                                println("Added auth message <-$message-> to cache.")
+                                                serviceLogger.i("Added auth message <-$message-> to cache.")
                                             }
                                         }
                                     }
 
                                     is EventStatus -> {
-                                        println("Received a status for the sent event:")
-                                        println(message)
+                                        serviceLogger.d("Received a status for the sent event:")
+                                        serviceLogger.d(message.toString())
                                     }
 
                                     is RelayEose -> {
                                         relayEoseCount.update { it + 1 }
-                                        println("Relay EOSE received from ${endpoint.relayURI}")
-                                        println(message)
+                                        serviceLogger.d("Relay EOSE received from ${endpoint.relayURI}")
+                                        serviceLogger.d(message.toString())
                                         break
 
                                     }
 
                                     is CloseMessage -> {
                                         relayEoseCount.update { it + 1 }
-                                        println("Closed by Relay ${endpoint.relayURI} with reason: ${message.errorMessage}")
+                                        serviceLogger.w("Closed by Relay ${endpoint.relayURI} with reason: ${message.errorMessage}")
                                         this.close()
                                     }
 
                                     is RelayNotice -> {
-                                        println("Received a relay notice: $message")
+                                        serviceLogger.i("Received a relay notice: $message")
                                     }
                                 }
 
@@ -207,7 +205,7 @@ class NostrService(
                         }
                     }
                 } catch (e: Exception) {
-                    println("Failed to connect to ${endpoint.relayURI}: ${e.message}")
+                    serviceLogger.e("Failed to connect to ${endpoint.relayURI}: ${e.message}", e)
                     relayErrorCount.update { it + 1 }
                 }
             }
@@ -217,8 +215,9 @@ class NostrService(
 
         jobs.forEach { job -> job.join() }
         if (jobs.all { it.isCompleted }) {
-            println("EoseCount : ${relayEoseCount.value}")
-            println("RelayErrorCount: ${relayErrorCount.value}")
+            serviceLogger.d("EoseCount : ${relayEoseCount.value}")
+            serviceLogger.d("RelayErrorCount: ${relayErrorCount.value}")
+
 //            if (relayEoseCount.value + relayErrorCount.value == endpoints.size){
 //                stopService()
 //
