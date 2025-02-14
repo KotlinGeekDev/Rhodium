@@ -88,7 +88,7 @@ object Nip19Parser {
         return null
     }
 
-    fun uriToRoute(uri: String?): ParseReturn? {
+    fun parse(uri: String?): ParseReturn? {
         if (uri == null) return null
 
         try {
@@ -159,7 +159,7 @@ object Nip19Parser {
 }
 
 fun decodePublicKey(key: String): ByteArray =
-    when (val parsed = Nip19Parser.uriToRoute(key)?.entity) {
+    when (val parsed = Nip19Parser.parse(key)?.entity) {
         is NSec -> Identity(privKey = key.bechToBytes()).pubKey
         is NPub -> parsed.hex.toBytes()
         is NProfile -> parsed.hex.toBytes()
@@ -168,7 +168,7 @@ fun decodePublicKey(key: String): ByteArray =
 
 fun decodePrivateKeyAsHexOrNull(key: String): String? =
     try {
-        when (val parsed = Nip19Parser.uriToRoute(key)?.entity) {
+        when (val parsed = Nip19Parser.parse(key)?.entity) {
             is NSec -> parsed.hex
             is NPub -> null
             is NProfile -> null
@@ -186,7 +186,7 @@ fun decodePrivateKeyAsHexOrNull(key: String): String? =
 
 fun decodePublicKeyAsHexOrNull(key: String): String? =
     try {
-        when (val parsed = Nip19Parser.uriToRoute(key)?.entity) {
+        when (val parsed = Nip19Parser.parse(key)?.entity) {
             is NSec -> Identity(privKey = key.bechToBytes()).pubKey.toHexString()
             is NPub -> parsed.hex
             is NProfile -> parsed.hex
@@ -204,7 +204,7 @@ fun decodePublicKeyAsHexOrNull(key: String): String? =
 
 fun decodeEventIdAsHexOrNull(key: String): String? =
     try {
-        when (val parsed = Nip19Parser.uriToRoute(key)?.entity) {
+        when (val parsed = Nip19Parser.parse(key)?.entity) {
             is NSec -> null
             is NPub -> null
             is NProfile -> null
