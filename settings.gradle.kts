@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ballast"
-include("ballast-core")
+rootProject.name = "rhodium"
+include("rhodium-core")
 //include(":kostr-android")
