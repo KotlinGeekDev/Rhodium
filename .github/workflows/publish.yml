@@ -1,14 +1,14 @@
 
 name: Publish
 on:
-#  push:
-#   branches: ["develop"]
+  push:
+   branches: ["develop"]
   release:
     types: [released]
 
-#concurrency:
-#  group: ${{ github.ref }}
-#  cancel-in-progress: true
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   publish:
