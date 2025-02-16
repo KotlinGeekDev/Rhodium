@@ -6,8 +6,9 @@ on:
   release:
     types: [released]
 
-#concurrency:
-#  cancel-in-progress: true
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   publish:
