@@ -220,7 +220,7 @@ android {
             aarMetadata {
 
             }
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
     }
     compileOptions {
