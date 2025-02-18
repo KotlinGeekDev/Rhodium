@@ -30,7 +30,7 @@ kotlin {
         languageVersion.set(KotlinVersion.KOTLIN_1_8)
     }
 
-    jvm("baseJvm") {
+    jvm("commonJvm") {
 
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
@@ -118,37 +118,31 @@ kotlin {
             implementation(kotlin("test-annotations-common"))
         }
 
-        val commonJvmMain = create("commonJvmMain") {
+        val commonJvmMain by getting {
             dependsOn(commonMain.get())
-        }
-        commonJvmMain.dependencies {
-            implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:$kotlinCryptoVersion")
-
-            implementation("com.squareup.okhttp3:okhttp:4.12.0")
-            implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-            implementation("ch.qos.logback:logback-classic:1.4.14")
-        }
-
-        val commonJvmTest = create("commonJvmTest") {
-            dependsOn(commonTest.get())
-        }
-        commonJvmTest.dependencies {
-            implementation(kotlin("test-junit5"))
-
-            implementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
-            implementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-            implementation("org.assertj:assertj-core:3.23.1")
-            runtimeOnly("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm-linux:0.15.0")
-            runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-            runtimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
-        }
-
-        val baseJvmMain by getting {
-            dependsOn(commonJvmMain)
 
             dependencies {
+                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:$kotlinCryptoVersion")
+
+                implementation("com.squareup.okhttp3:okhttp:4.12.0")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 //implementation("fr.acinq.secp256k1:secp256k1-kmp-jvm:0.6.4")
                 implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm:0.15.0")
+            }
+        }
+
+        val commonJvmTest by getting {
+            dependsOn(commonTest.get())
+
+            dependencies {
+                implementation(kotlin("test-junit5"))
+
+                implementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+                implementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+                implementation("org.assertj:assertj-core:3.23.1")
+                runtimeOnly("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm-linux:0.15.0")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+                runtimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
             }
         }
 
@@ -164,16 +158,10 @@ kotlin {
         }
 
         androidInstrumentedTest.configure {
-            //dependsOn(commonJvmTest)
-        }
-
-        val androidUnitTest by getting {
             dependsOn(commonJvmTest)
         }
 
-
-
-        val baseJvmTest by getting {
+        val androidUnitTest by getting {
             dependsOn(commonJvmTest)
         }
 
