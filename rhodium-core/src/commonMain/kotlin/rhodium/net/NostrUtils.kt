@@ -1,8 +1,5 @@
 package rhodium.net
 
-import rhodium.nostr.Nip05ValidationError
-import rhodium.nostr.arraySerializer
-import rhodium.nostr.eventMapper
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
@@ -10,6 +7,9 @@ import io.ktor.client.statement.*
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import rhodium.nostr.Nip05ValidationError
+import rhodium.nostr.arraySerializer
+import rhodium.nostr.eventMapper
 
 object NostrUtils {
 
@@ -21,7 +21,7 @@ object NostrUtils {
         if (nameWithDomain.size > 2 || nameWithDomain.isEmpty()) {
             throw Nip05ValidationError("Likely a malformed address.")
         }
-        else if (nameWithDomain.size == 1 || nameWithDomain[0].contentEquals("_")) {
+        else if (nameWithDomain.size == 1) {
             val domain = nameWithDomain[0]
             if (!UrlUtil.isValidUrl(domain)) throw Nip05ValidationError("Invalid identifier.")
             val urlToUse = "https://${domain}/.well-known/nostr.json?name=_"
