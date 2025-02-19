@@ -10,4 +10,8 @@ class Relay(
             return Relay(address)
         }
     }
+
+    override fun toString(): String {
+        return "Relay(url=$relayURI, read=$readPolicy, write=$writePolicy)"
+    }
 }
