@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import rhodium.crypto.CryptoUtils
 
-internal val eventMapper = Json
+internal val eventMapper = Json { ignoreUnknownKeys = true }
 @OptIn(ExperimentalSerializationApi::class)
 internal val arraySerializer: KSerializer<Array<String>> = ArraySerializer(String.serializer())
 

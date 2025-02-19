@@ -1,13 +1,13 @@
 
 package rhodium.nostr
 
-import rhodium.crypto.CryptoUtils
-import rhodium.crypto.toHexString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.add
 import kotlinx.serialization.json.buildJsonArray
+import rhodium.crypto.CryptoUtils
+import rhodium.crypto.toHexString
 
 /**
  * The Event class representing the Nostr Event.
@@ -22,7 +22,7 @@ import kotlinx.serialization.json.buildJsonArray
  * @param eventSignature The event's signature, as a 64-byte string
  */
 @Serializable
-data class Event(
+open class Event(
     val id: String,
     val pubkey: String,
     @SerialName("created_at") val creationDate: Long,
@@ -30,7 +30,10 @@ data class Event(
     val tags: List<Tag>,
     val content: String,
     @SerialName("sig") val eventSignature: String
-)
+){
+    override fun toString(): String  =
+        "Event(id=$id, pubkey=$pubkey, creationDate=$creationDate, eventKind=$eventKind, tags=$tags, content=$content, eventSignature=$eventSignature)"
+}
 
 
 
