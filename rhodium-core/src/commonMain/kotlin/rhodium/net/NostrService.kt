@@ -243,6 +243,35 @@ class NostrService(
         return potentialResults.maxBy { it.creationDate }
     }
 
+    suspend fun fetchRelayListFor(profileHex: String, fetchRelays: List<String>): List<Relay> {
+        val relayListRequest = RequestMessage.singleFilterRequest(
+            filter = NostrFilter.newFilter()
+                .kinds(EventKind.RELAY_LIST.kind)
+                .authors(profileHex)
+                .limit(1)
+                .build()
+        )
+        val potentialResults = if (fetchRelays.isEmpty())
+            requestWithResult(relayListRequest) else requestWithResult(relayListRequest, fetchRelays.map { Relay(it) })
+
+        val mostUpdatedRelayList = potentialResults.maxBy { it.creationDate }
+        val potentialRelays = mostUpdatedRelayList.tags.filter { tag -> tag.identifier == "r" }
+        if (potentialRelays.isEmpty()) {
+            return emptyList()
+        }
+        else {
+            val relays = potentialRelays.map { relayTag ->
+                Relay(
+                    relayTag.description,
+                    readPolicy = if (relayTag.content == null) true else relayTag.content.contentEquals("read"),
+                    writePolicy = if (relayTag.content == null) true else relayTag.content.contentEquals("write")
+                )
+            }
+
+            return relays
+        }
+    }
+
     fun clearRelayPool() {
         relayPool.clearPool()
     }
