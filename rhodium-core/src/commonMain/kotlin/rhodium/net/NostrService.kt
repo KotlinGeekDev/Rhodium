@@ -14,6 +14,7 @@ import rhodium.logging.serviceLogger
 import rhodium.nostr.*
 import rhodium.nostr.client.ClientMessage
 import rhodium.nostr.client.RequestMessage
+import rhodium.nostr.events.MetadataEvent
 import rhodium.nostr.relay.*
 import kotlin.coroutines.CoroutineContext
 
@@ -198,6 +199,7 @@ class NostrService(
 
                                     is RelayNotice -> {
                                         serviceLogger.i("Received a relay notice: $message")
+                                        if (message.message.contains("ERROR")) break
                                     }
                                 }
 
@@ -229,7 +231,7 @@ class NostrService(
         return results
     }
 
-    suspend fun getMetadataFor(profileHex: String, preferredRelays: List<String>): Event {
+    suspend fun getMetadataFor(profileHex: String, preferredRelays: List<String>): MetadataEvent {
         val profileRequest = RequestMessage.singleFilterRequest(
             filter = NostrFilter.newFilter()
                 .kinds(EventKind.METADATA.kind)
@@ -241,6 +243,7 @@ class NostrService(
             requestWithResult(profileRequest) else requestWithResult(profileRequest, preferredRelays.map { Relay(it) })
 
         return potentialResults.maxBy { it.creationDate }
+            .let { MetadataEvent(it.id, it.pubkey, it.creationDate, it.tags, it.content, it.eventSignature) }
     }
 
     suspend fun fetchRelayListFor(profileHex: String, fetchRelays: List<String>): List<Relay> {
