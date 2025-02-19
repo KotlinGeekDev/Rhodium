@@ -199,6 +199,7 @@ class NostrService(
 
                                     is RelayNotice -> {
                                         serviceLogger.i("Received a relay notice: $message")
+                                        if (message.message.contains("ERROR")) break
                                     }
                                 }
 
