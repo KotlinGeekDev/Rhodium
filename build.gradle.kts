@@ -31,7 +31,7 @@ allprojects {
     val isJitpack = System.getenv("JITPACK") == "true"
 
     group = "io.github.kotlingeekdev"
-    version = "1.0-beta-14"
+    version = "1.0-beta-15"
 
 
 //    val javadocJar = tasks.register<Jar>("javadocJar") {
