@@ -12,6 +12,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
+import rhodium.crypto.toHexString
 import rhodium.nostr.Event
 import rhodium.nostr.NostrFilter
 
@@ -114,7 +115,7 @@ open class RequestMessage(
 
     companion object {
         fun singleFilterRequest(
-            subscriptionId: String = uuid4().bytes.decodeToString().substring(0, 5),
+            subscriptionId: String = uuid4().bytes.toHexString().substring(0, 5),
             filter: NostrFilter
         ): RequestMessage {
             return RequestMessage(messageType = "REQ", subscriptionId, listOf(filter))

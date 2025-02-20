@@ -208,7 +208,13 @@ android {
             aarMetadata {
 
             }
-            isMinifyEnabled = true
+            isMinifyEnabled = false
+        }
+        debug {
+            aarMetadata {
+
+            }
+            isMinifyEnabled = false
         }
     }
     compileOptions {
