@@ -149,7 +149,6 @@ kotlin {
 
 
         val androidMain by getting {
-            dependsOn(commonJvmMain)
 
             dependencies {
                 implementation("androidx.appcompat:appcompat:1.7.0")
@@ -158,11 +157,11 @@ kotlin {
         }
 
         androidInstrumentedTest.configure {
-            dependsOn(commonJvmTest)
+//            dependsOn(commonJvmTest)
         }
 
         val androidUnitTest by getting {
-            dependsOn(commonJvmTest)
+//            dependsOn(commonJvmTest)
         }
 
         linuxMain.configure {
@@ -201,6 +200,7 @@ android {
         compileSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -208,7 +208,11 @@ android {
             aarMetadata {
 
             }
-            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            isMinifyEnabled = true
         }
         debug {
             aarMetadata {
