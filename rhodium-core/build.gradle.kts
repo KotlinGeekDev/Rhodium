@@ -19,6 +19,27 @@ plugins {
 //    `maven-publish`
 }
 
+android {
+    namespace = "io.github.kotlingeekdev.rhodium.android"
+    compileSdk = 34
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 34
+        compileSdk = 34
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = false
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+}
+
 
 kotlin {
     //explicitApi()
@@ -45,7 +66,7 @@ kotlin {
     }
 
 
-    androidTarget {
+    androidTarget() {
 
         publishAllLibraryVariants()
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -77,7 +98,6 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-
 
     applyDefaultHierarchyTemplate()
 
@@ -119,7 +139,6 @@ kotlin {
         }
 
         val commonJvmMain by getting {
-            dependsOn(commonMain.get())
 
             dependencies {
                 implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:$kotlinCryptoVersion")
@@ -132,7 +151,6 @@ kotlin {
         }
 
         val commonJvmTest by getting {
-            dependsOn(commonTest.get())
 
             dependencies {
                 implementation(kotlin("test-junit5"))
@@ -148,20 +166,29 @@ kotlin {
 
 
 
-        val androidMain by getting {
+        androidMain.configure {
 
             dependencies {
                 implementation("androidx.appcompat:appcompat:1.7.0")
+                //        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
+                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:$kotlinCryptoVersion")
+                implementation("com.squareup.okhttp3:okhttp:4.12.0")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:0.15.0")
             }
         }
 
-        androidInstrumentedTest.configure {
-//            dependsOn(commonJvmTest)
+        androidUnitTest.configure {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+            }
         }
 
-        val androidUnitTest by getting {
-//            dependsOn(commonJvmTest)
+        androidInstrumentedTest.configure {
+            dependencies {
+                implementation("androidx.test.ext:junit:1.2.1")
+                implementation("androidx.test.espresso:espresso-core:3.6.1")
+            }
         }
 
         linuxMain.configure {
@@ -180,6 +207,7 @@ kotlin {
         }
 
         appleMain.configure {
+            dependsOn(commonMain.get())
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
                 implementation("dev.whyoleg.cryptography:cryptography-provider-apple:$kotlinCryptoVersion")
@@ -191,49 +219,6 @@ kotlin {
     }
 }
 
-android {
-    namespace = "io.github.kotlingeekdev.rhodium.android"
-    compileSdk = 34
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 34
-        compileSdk = 34
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            aarMetadata {
-
-            }
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            isMinifyEnabled = true
-        }
-        debug {
-            aarMetadata {
-
-            }
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = false
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    dependencies {
-//        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
-        testImplementation("junit:junit:4.13.2")
-        androidTestImplementation("androidx.test.ext:junit:1.2.1")
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    }
-
-}
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
     compilerOptions {
