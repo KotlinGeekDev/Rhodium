@@ -149,7 +149,7 @@ kotlin {
 
 
         val androidMain by getting {
-
+            dependsOn(commonJvmMain)
             dependencies {
                 implementation("androidx.appcompat:appcompat:1.7.0")
                 implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:0.15.0")
@@ -157,11 +157,11 @@ kotlin {
         }
 
         androidInstrumentedTest.configure {
-//            dependsOn(commonJvmTest)
+            dependsOn(commonJvmTest)
         }
 
         val androidUnitTest by getting {
-//            dependsOn(commonJvmTest)
+            dependsOn(commonJvmTest)
         }
 
         linuxMain.configure {
