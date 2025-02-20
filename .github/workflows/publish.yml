@@ -4,7 +4,7 @@ on:
 #  push:
 #   branches: ["develop"]
   release:
-    types: [released]
+    types: [released, prereleased]
 
 concurrency:
   group: ${{ github.ref }}
