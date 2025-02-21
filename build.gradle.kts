@@ -15,7 +15,7 @@ buildscript {
 plugins {
     kotlin("multiplatform") version "2.0.20" apply false
     id("com.android.library") version "8.2.2" apply false
-    id("org.jetbrains.kotlinx.atomicfu") version "0.25.0"
+    id("org.jetbrains.kotlinx.atomicfu") version "0.26.1"
     id("com.vanniktech.maven.publish") version "0.30.0"
     //id("org.jetbrains.kotlin.android") version "2.0.0" apply false
     //id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" apply false
@@ -31,7 +31,7 @@ allprojects {
     val isJitpack = System.getenv("JITPACK") == "true"
 
     group = "io.github.kotlingeekdev"
-    version = "1.0-beta-16"
+    version = "1.0-beta-17"
 
 
 //    val javadocJar = tasks.register<Jar>("javadocJar") {
@@ -55,7 +55,7 @@ allprojects {
         pom {
             name = "Rhodium"
             description = " A Kotlin Multiplatform library for Nostr"
-            url = "https://github.com/KotlinGeekDev/Ballast"
+            url = "https://github.com/KotlinGeekDev/Rhodium"
 
             licenses {
                 license {

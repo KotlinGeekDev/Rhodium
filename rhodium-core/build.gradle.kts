@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 val kotlinVersion = "2.0.20"
-val ktorVersion = "3.0.1"
+val ktorVersion = "2.3.13"
 val kotlinCryptoVersion = "0.4.0"
 
 val junitJupiterVersion = "5.10.1"
@@ -93,11 +93,26 @@ kotlin {
     }
 
     //Apple targets
-    macosX64()
-    macosArm64()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val macosX64 = macosX64()
+    val macosArm64 = macosArm64()
+    val iosArm64 = iosArm64()
+    val iosX64 = iosX64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+    val appleTargets = listOf(
+        macosX64, macosArm64,
+        iosArm64, iosX64, iosSimulatorArm64,
+    )
+
+    appleTargets.forEach { target ->
+        with(target) {
+            binaries {
+                framework {
+                    baseName = "Rhodium"
+                }
+            }
+        }
+    }
+
 
     applyDefaultHierarchyTemplate()
 
@@ -122,7 +137,7 @@ kotlin {
             //Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
             //Atomics
-            implementation("org.jetbrains.kotlinx:atomicfu:0.25.0")
+            implementation("org.jetbrains.kotlinx:atomicfu:0.26.1")
             //Date-time
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             //UUID
@@ -179,12 +194,14 @@ kotlin {
         }
 
         androidUnitTest.configure {
+            dependsOn(commonJvmTest)
             dependencies {
                 implementation("junit:junit:4.13.2")
             }
         }
 
         androidInstrumentedTest.configure {
+            dependsOn(commonJvmTest)
             dependencies {
                 implementation("androidx.test.ext:junit:1.2.1")
                 implementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -213,8 +230,14 @@ kotlin {
                 implementation("dev.whyoleg.cryptography:cryptography-provider-apple:$kotlinCryptoVersion")
             }
         }
-        macosMain.get().dependsOn(appleMain.get())
-        iosMain.get().dependsOn(appleMain.get())
+        appleTest.configure {
+            dependsOn(commonTest.get())
+        }
+
+        appleTargets.forEach { target ->
+            getByName("${target.targetName}Main") { dependsOn(appleMain.get()) }
+            getByName("${target.targetName}Test") { dependsOn(appleTest.get()) }
+        }
 
     }
 }
