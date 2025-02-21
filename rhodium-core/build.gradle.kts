@@ -93,11 +93,26 @@ kotlin {
     }
 
     //Apple targets
-    macosX64()
-    macosArm64()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val macosX64 = macosX64()
+    val macosArm64 = macosArm64()
+    val iosArm64 = iosArm64()
+    val iosX64 = iosX64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+    val appleTargets = listOf(
+        macosX64, macosArm64,
+        iosArm64, iosX64, iosSimulatorArm64,
+    )
+
+    appleTargets.forEach { target ->
+        with(target) {
+            binaries {
+                framework {
+                    baseName = "Rhodium"
+                }
+            }
+        }
+    }
+
 
     applyDefaultHierarchyTemplate()
 
@@ -213,8 +228,11 @@ kotlin {
                 implementation("dev.whyoleg.cryptography:cryptography-provider-apple:$kotlinCryptoVersion")
             }
         }
-        macosMain.get().dependsOn(appleMain.get())
-        iosMain.get().dependsOn(appleMain.get())
+
+        appleTargets.forEach { target ->
+            getByName("${target.targetName}Main") { dependsOn(appleMain.get()) }
+            getByName("${target.targetName}Test") { dependsOn(appleTest.get()) }
+        }
 
     }
 }
