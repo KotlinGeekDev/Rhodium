@@ -93,6 +93,6 @@ class NostrTests {
         println(event)
         println("Correct Event:")
         println(correctlyParsedEvent)
-        assertEquals(correctlyParsedEvent, event)
+        assertEquals(correctlyParsedEvent.toString(), event.toString())
     }
 }

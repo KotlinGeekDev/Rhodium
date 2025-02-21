@@ -121,7 +121,7 @@ kotlin {
             //Ktor
             implementation("io.ktor:ktor-client-core:$ktorVersion")
             implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-            //implementation("io.ktor:ktor-client-logging:$ktorVersion")
+            implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
             //Kotlin base
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
@@ -135,7 +135,7 @@ kotlin {
             //Serialization
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
             //Coroutines
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
             //Atomics
             implementation("org.jetbrains.kotlinx:atomicfu:0.26.1")
             //Date-time
