@@ -8,10 +8,10 @@
 name: KMP CI with Gradle
 
 on:
-  push:
-    branches: [ "develop" ]
+#  push:
+#    branches: [ "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop" ]
   workflow_call:
 
 permissions:
