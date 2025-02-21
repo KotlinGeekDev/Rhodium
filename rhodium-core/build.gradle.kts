@@ -194,12 +194,14 @@ kotlin {
         }
 
         androidUnitTest.configure {
+            dependsOn(commonJvmTest)
             dependencies {
                 implementation("junit:junit:4.13.2")
             }
         }
 
         androidInstrumentedTest.configure {
+            dependsOn(commonJvmTest)
             dependencies {
                 implementation("androidx.test.ext:junit:1.2.1")
                 implementation("androidx.test.espresso:espresso-core:3.6.1")
