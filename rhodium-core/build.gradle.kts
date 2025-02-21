@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 val kotlinVersion = "2.0.20"
-val ktorVersion = "3.0.1"
+val ktorVersion = "2.3.13"
 val kotlinCryptoVersion = "0.4.0"
 
 val junitJupiterVersion = "5.10.1"
@@ -106,7 +106,7 @@ kotlin {
             //Ktor
             implementation("io.ktor:ktor-client-core:$ktorVersion")
             implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-            implementation("io.ktor:ktor-client-logging:$ktorVersion")
+            //implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
             //Kotlin base
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
@@ -120,9 +120,9 @@ kotlin {
             //Serialization
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
             //Coroutines
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
             //Atomics
-            implementation("org.jetbrains.kotlinx:atomicfu:0.25.0")
+            implementation("org.jetbrains.kotlinx:atomicfu:0.26.1")
             //Date-time
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             //UUID
