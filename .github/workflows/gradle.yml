@@ -8,8 +8,8 @@
 name: KMP CI with Gradle
 
 on:
-#  push:
-#    branches: [ "develop" ]
+  push:
+    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
   workflow_call:
@@ -52,9 +52,3 @@ jobs:
         uses: gradle/gradle-build-action@ce999babab2de1c4b649dc15f0ee67e6246c994f
         with:
           arguments: ${{ matrix.target }}
-      - name: Maven Local Publishing
-        run: ./gradlew publishToMavenLocal --no-configuration-cache
-        env:
-          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
