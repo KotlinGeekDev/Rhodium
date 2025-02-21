@@ -228,6 +228,9 @@ kotlin {
                 implementation("dev.whyoleg.cryptography:cryptography-provider-apple:$kotlinCryptoVersion")
             }
         }
+        appleTest.configure {
+            dependsOn(commonTest.get())
+        }
 
         appleTargets.forEach { target ->
             getByName("${target.targetName}Main") { dependsOn(appleMain.get()) }
