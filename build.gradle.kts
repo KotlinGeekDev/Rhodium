@@ -6,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
-        classpath("com.android.tools.build:gradle:8.2.2")
+        classpath("com.android.tools.build:gradle:8.7.3")
         classpath(kotlin("serialization", version = kotlinVersion))
     }
 
@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     kotlin("multiplatform") version "2.1.10" apply false
-    id("com.android.library") version "8.2.2" apply false
+    id("com.android.library") version "8.7.3" apply false
     id("org.jetbrains.kotlinx.atomicfu") version "0.27.0"
     id("com.vanniktech.maven.publish") version "0.30.0"
     //id("org.jetbrains.kotlin.android") version "2.0.0" apply false
