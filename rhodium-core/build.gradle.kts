@@ -7,16 +7,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 val kotlinVersion = "2.0.20"
 val ktorVersion = "2.3.13"
 val kotlinCryptoVersion = "0.4.0"
-
+val secp256k1Version = "0.16.0"
 val junitJupiterVersion = "5.10.1"
 
 plugins {
-    //`java-library`
     kotlin("multiplatform")
     id("com.android.library")
-
     kotlin("plugin.serialization")
-//    `maven-publish`
 }
 
 android {
@@ -128,7 +125,7 @@ kotlin {
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 
             //Crypto(Secp256k1-utils, SecureRandom, Hashing, etc.)
-            implementation("fr.acinq.secp256k1:secp256k1-kmp:0.15.0")
+            implementation("fr.acinq.secp256k1:secp256k1-kmp:$secp256k1Version")
             implementation("dev.whyoleg.cryptography:cryptography-core:$kotlinCryptoVersion")
             implementation("dev.whyoleg.cryptography:cryptography-random:$kotlinCryptoVersion")
 
@@ -161,7 +158,7 @@ kotlin {
                 implementation("com.squareup.okhttp3:okhttp:4.12.0")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 //implementation("fr.acinq.secp256k1:secp256k1-kmp-jvm:0.6.4")
-                implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm:0.15.0")
+                implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm:$secp256k1Version")
             }
         }
 
@@ -173,7 +170,7 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
                 implementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
                 implementation("org.assertj:assertj-core:3.23.1")
-                runtimeOnly("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm-linux:0.15.0")
+                runtimeOnly("fr.acinq.secp256k1:secp256k1-kmp-jni-jvm-linux:$secp256k1Version")
                 runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
                 runtimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
             }
@@ -189,7 +186,7 @@ kotlin {
                 implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:$kotlinCryptoVersion")
                 implementation("com.squareup.okhttp3:okhttp:4.12.0")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-                implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:0.15.0")
+                implementation("fr.acinq.secp256k1:secp256k1-kmp-jni-android:$secp256k1Version")
             }
         }
 
