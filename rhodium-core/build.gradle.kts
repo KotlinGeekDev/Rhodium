@@ -136,7 +136,7 @@ kotlin {
             //Atomics
             implementation("org.jetbrains.kotlinx:atomicfu:0.26.1")
             //Date-time
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
             //UUID
             implementation("com.benasher44:uuid:0.8.4")
             //ByteBuffer(until a kotlinx-io replacement appears)
