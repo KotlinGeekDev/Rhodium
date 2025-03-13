@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
-val kotlinVersion = "2.1.0"
-val ktorVersion = "2.3.13"
+val kotlinVersion = "2.1.10"
+val ktorVersion = "3.1.1"
 val kotlinCryptoVersion = "0.4.0"
 val secp256k1Version = "0.17.1"
 val junitJupiterVersion = "5.10.1"
@@ -42,11 +42,11 @@ kotlin {
     //explicitApi()
     jvmToolchain(17)
 
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    compilerOptions {
-        apiVersion.set(KotlinVersion.KOTLIN_1_8)
-        languageVersion.set(KotlinVersion.KOTLIN_1_8)
-    }
+//    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+//    compilerOptions {
+//        apiVersion.set(KotlinVersion.KOTLIN_2_0)
+//        languageVersion.set(KotlinVersion.KOTLIN_2_0)
+//    }
 
     jvm("commonJvm") {
 
@@ -130,11 +130,11 @@ kotlin {
             implementation("dev.whyoleg.cryptography:cryptography-random:$kotlinCryptoVersion")
 
             //Serialization
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
             //Coroutines
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
             //Atomics
-            implementation("org.jetbrains.kotlinx:atomicfu:0.26.1")
+            implementation("org.jetbrains.kotlinx:atomicfu:0.27.0")
             //Date-time
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
             //UUID
