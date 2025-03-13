@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.SonatypeHost
 
 buildscript {
 
-    val kotlinVersion = "2.0.20"
+    val kotlinVersion = "2.1.0"
 
     dependencies {
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("multiplatform") version "2.0.20" apply false
+    kotlin("multiplatform") version "2.1.0" apply false
     id("com.android.library") version "8.2.2" apply false
     id("org.jetbrains.kotlinx.atomicfu") version "0.26.1"
     id("com.vanniktech.maven.publish") version "0.30.0"

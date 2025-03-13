@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
-val kotlinVersion = "2.0.20"
+val kotlinVersion = "2.1.0"
 val ktorVersion = "2.3.13"
 val kotlinCryptoVersion = "0.4.0"
 val secp256k1Version = "0.16.0"
